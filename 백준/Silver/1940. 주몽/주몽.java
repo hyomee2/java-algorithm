@@ -8,17 +8,33 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         int[] nums = new int[m];
         int answer = 0;
+        int left = 0;
+        int right = m;
 
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         for (int i = 0; i < m; i++) {
             nums[i] = Integer.parseInt(st.nextToken());
         }
 
-        for (int i = 0; i < m - 1; i++) {
-            for (int j = i + 1; j < m; j++) {
-                if (nums[i] + nums[j] == n) {
-                    answer++;
-                }
+        Arrays.sort(nums);
+
+        // 고유한 재료의 값이 m 이하인 것만 고려하면 됨. right 인덱스 설정
+        for (int i = m - 1; i >= 0; i--) {
+            if (nums[i] <= n) {
+                right = i;
+                break;
+            }
+        }
+
+        while (left < right) {
+            if (nums[left] + nums[right] == n) {
+                answer++;
+                left++;
+                right--;
+            } else if (nums[left] + nums[right] > n) {
+                right--;
+            } else {   // nums[left] + nums[right] < n
+                left++;
             }
         }
 
