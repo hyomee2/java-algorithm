@@ -7,7 +7,7 @@ public class Main {
         int title = 666;
 
         while(n != 0) {
-            if (String.valueOf(title).contains("666")) n--;
+            if (Integer.toString(title).contains("666")) n--;
             title++;
         }
 
