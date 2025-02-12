@@ -1,48 +1,37 @@
-// 남의 코드 복붙해본거임 내가 한거 아님
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
+import java.awt.*;
 
 public class Main {
-    static class Pos{
-        int x;
-        int y;
-
-        Pos(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-    static int N, M;
+    static int time = 0;
+    static int R, C;
     static char[][] map;
-    static Queue<Pos> jihunQ = new LinkedList<>();
-    static Queue<Pos> fireQ = new LinkedList<>();
-    static boolean[][] jihunVisited;
-    static boolean[][] fireVisited;
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    static boolean[][] isJihunVisited;
+    static boolean[][] isFireVisited;
+    static Queue<Point> jihunQue = new LinkedList<>();
+    static Queue<Point> fireQue = new LinkedList<>();
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        map = new char[N][M];
-        jihunVisited = new boolean[N][M];
-        fireVisited = new boolean[N][M];
-        for(int i=0; i<N; i++) {
-            String str = br.readLine();
-            for(int j=0; j<M; j++) {
-                map[i][j] = str.charAt(j);
-                if(map[i][j] == 'J') {
-                    map[i][j] = '.';
-                    jihunQ.add(new Pos(i, j));
-                    jihunVisited[i][j] = true;
-                } else if(map[i][j] == 'F') {
-                    fireQ.add(new Pos(i, j));
-                    fireVisited[i][j] = true;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        R = Integer.parseInt(st.nextToken());
+        C = Integer.parseInt(st.nextToken());
+        map = new char[R][C];
+        isJihunVisited = new boolean[R][C];
+        isFireVisited = new boolean[R][C];
+
+        for (int i = 0; i < R; i++) {
+            String row = br.readLine();
+
+            for (int j = 0; j < C; j++){
+                map[i][j] = row.charAt(j);
+
+                if (map[i][j] == 'J') {
+                    jihunQue.add(new Point(i, j));
+                    isJihunVisited[i][j] = true;
+                } else if (map[i][j] == 'F') {
+                    fireQue.add(new Point(i, j));
+                    isFireVisited[i][j] = true;
                 }
             }
         }
@@ -51,48 +40,56 @@ public class Main {
         System.out.println("IMPOSSIBLE");
     }
 
-    private static void bfs() {
-        int[][] dist = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        int time = 0;
+    public static void bfs() {
+        int[][] coor = {{1, 0}, {0, -1}, {-1, 0}, {0, 1}};
 
-        while(!jihunQ.isEmpty()) {
-            int jihunLen = jihunQ.size();
-            int fireLen = fireQ.size();
-            for(int i=0; i<fireLen; i++) {
-                Pos fire = fireQ.poll();
-                for(int d=0; d<4; d++) {
-                    int nx = fire.x + dist[d][0];
-                    int ny = fire.y + dist[d][1];
+        // 지훈이가 빠져나오기 전 동안 반복
+        while(!jihunQue.isEmpty()) {
+            int jihunQueSize = jihunQue.size();
+            int fireQueSize = fireQue.size();
+            
+            for (int i = 0; i < fireQueSize; i++) {
+                Point fire = fireQue.poll();
 
-                    if(!isIn(nx, ny) || map[nx][ny] == '#' || fireVisited[nx][ny]) continue;
-                    fireVisited[nx][ny] = true;
+                for (int j = 0; j < 4; j++) {
+                    int nx = fire.x + coor[j][0];
+                    int ny = fire.y + coor[j][1];
+
+                    if (!isValid(nx, ny) || map[nx][ny] == '#' || isFireVisited[nx][ny])
+                        continue;
+
+                    isFireVisited[nx][ny] = true;
                     map[nx][ny] = 'F';
-                    fireQ.add(new Pos(nx, ny));
+                    fireQue.add(new Point(nx, ny));
                 }
             }
-            for(int i=0; i<jihunLen; i++) {
-                Pos jihun = jihunQ.poll();
-                for(int d=0; d<4; d++) {
-                    int nx = jihun.x + dist[d][0];
-                    int ny = jihun.y + dist[d][1];
 
-                    if(!isIn(nx, ny)) {
+            for (int i = 0; i < jihunQueSize; i++) {
+                Point jihun = jihunQue.poll();
+
+                for (int j = 0; j < 4; j++) {
+                    int nx = jihun.x + coor[j][0];
+                    int ny = jihun.y + coor[j][1];
+
+                    if (!isValid(nx, ny)) {
                         time++;
                         System.out.println(time);
                         System.exit(0);
                     }
 
-                    if(map[nx][ny] !='.' || jihunVisited[nx][ny]) continue;
-                    jihunVisited[nx][ny] = true;
-                    jihunQ.add(new Pos(nx, ny));
+                    if (map[nx][ny] != '.' || isJihunVisited[nx][ny])
+                        continue;
+                    isJihunVisited[nx][ny] = true;
+                    jihunQue.add(new Point(nx, ny));
                 }
             }
 
             time++;
         }
+
     }
 
-    private static boolean isIn(int x, int y){
-        return 0<=x && x<N && 0<=y && y<M;
+    public static boolean isValid(int x, int y) {
+        return 0 <= x && x < R && 0 <= y && y < C;
     }
 }
