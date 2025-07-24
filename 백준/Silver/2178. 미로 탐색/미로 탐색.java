@@ -27,8 +27,6 @@ public class Main {
         }
 
         bfs(1, 1);
-
-        System.out.println(counts[N][M]);
     }
 
     public static void bfs(int x, int y) {
@@ -41,6 +39,10 @@ public class Main {
             int[] n = queue.poll();
             int nx = n[0];
             int ny = n[1];
+
+            if (nx == N && ny == M) {
+                System.out.println(counts[N][M]);
+            }
 
             for (int[] move : moves) {
                 int newX = nx + move[0];
