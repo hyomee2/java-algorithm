@@ -5,6 +5,8 @@ public class Main {
     static int M, N, K, count, x, y;
     static boolean[][] isVisited;
     static int[][] map;
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, -1, 0, 1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -50,17 +52,13 @@ public class Main {
     }
 
     public static void dfs(int x, int y) {
-        int[] dx = {1, 0, -1, 0};
-        int[] dy = {0, -1, 0, 1};
-
-
+        isVisited[x][y] = true;
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
 
             if (!isValid(nx, ny)) continue;
-
-            isVisited[nx][ny] = true;
+            
             dfs(nx, ny);
         }
     }
