@@ -13,10 +13,11 @@ public class Main {
         for (int i = 1; i <= N; i++) {
             parent[i] = i;
         }
-        
+
         for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine(), " ");
             for (int j = 1; j <= N; j++) {
+                if (i < j) break; // 무방향 그래프이므로 양방향 체크가 필요없음.
                 int connected = Integer.parseInt(st.nextToken());
                 if (connected == 1) {
                     union(i, j);
