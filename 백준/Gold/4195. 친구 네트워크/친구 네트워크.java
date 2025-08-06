@@ -8,10 +8,11 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         StringBuilder sb = new StringBuilder();
-        int numOfCase = Integer.parseInt(br.readLine());
         int F, count, index;
         HashMap<String, Integer> hashMap;
         String node1, node2;
+        
+        int numOfCase = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < numOfCase; i++) {
             F = Integer.parseInt(br.readLine());
@@ -20,9 +21,10 @@ public class Main {
             size =  new int[2 * F];
             index = 0;
 
+            Arrays.fill(size, 1);
+            
             for (int j = 0; j < 2 * F; j++) {
                 parent[j] = j;
-                size[j] = 1;
             }
 
             for (int j = 0; j < F; j++) {
