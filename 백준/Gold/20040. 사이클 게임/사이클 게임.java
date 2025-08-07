@@ -34,7 +34,7 @@ public class Main {
             node1 = Integer.parseInt(st.nextToken());
             node2 = Integer.parseInt(st.nextToken());
 
-            if (find(node1) == find(node2) && size[find(node1)] >= 2) {
+            if (find(node1) == find(node2)) {
                 answer = i + 1;
                 break;
             }
