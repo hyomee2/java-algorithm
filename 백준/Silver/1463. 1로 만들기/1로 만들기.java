@@ -6,24 +6,18 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         int[] dp = new int[N + 1];
-        dp[1] = 0;
-        if (N >= 2) dp[2] = 1;
-        if (N >= 3) dp[3] = 1;
+        dp[1] = 0; 
 
-        for (int i = 4; i <= N; i++) {
-            dp[i] = 1000001; // 큰 값
+        for (int i = 2; i <= N; i++) {
+            // 기본: 1을 빼는 경우
+            dp[i] = dp[i - 1] + 1;
 
+            // 2로 나눌 수 있는 경우
             if (i % 2 == 0) {
                 dp[i] = Math.min(dp[i], dp[i / 2] + 1);
-            } else {  // i % 2 != 0
-                dp[i] = Math.min(dp[i], dp[i - 1] + 1);
             }
-
-            if ((i - 2) % 3 == 0) {
-                dp[i] = Math.min(dp[i], dp[i - 2] + 2);
-            } else if ((i - 1) % 3 == 0) {
-                dp[i] = Math.min(dp[i], dp[i - 1] + 1);
-            } else {    // i % 3 == 0
+            // 3으로 나눌 수 있는 경우
+            if (i % 3 == 0) {
                 dp[i] = Math.min(dp[i], dp[i / 3] + 1);
             }
         }
