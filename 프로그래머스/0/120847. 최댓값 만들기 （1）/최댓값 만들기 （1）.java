@@ -1,9 +1,10 @@
 import java.util.*;
+
 class Solution {
-    public int solution(int[] numbers) {   
-        Arrays.sort(numbers);
-        int len = numbers.length;
-        int answer = numbers[len - 1] * numbers[len - 2];
-        return answer;
+    public int solution(int[] numbers) {
+        // Collections 사용을 위해 int -> Integer
+        Integer[] nums = Arrays.stream(numbers).boxed().toArray(Integer[]::new);
+        Arrays.sort(nums, Collections.reverseOrder()); 
+        return nums[0] * nums[1];
     }
 }
